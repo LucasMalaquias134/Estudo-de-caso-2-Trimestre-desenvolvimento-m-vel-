@@ -1,4 +1,4 @@
-import 'package:estudo_de_caso_2_trimestre/conteudo/telaPrincipal.dart';
+import 'package:estudo_de_caso_2_trimestre/controllers/authController.dart';
 import 'package:flutter/material.dart';
 
 class Splash extends StatefulWidget {
@@ -11,13 +11,8 @@ class Splash extends StatefulWidget {
 class _SplashState extends State<Splash> {
   @override
   void initState() {
-    Future.delayed(Duration(seconds: 5), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => Telaprincipal()),
-      );
-    });
     super.initState();
+    Authcontroller.verificaSessao(context);
   }
 
   @override

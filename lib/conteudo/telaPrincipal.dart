@@ -1,10 +1,14 @@
 import 'dart:io';
 import 'dart:math' as math;
 
+import 'package:estudo_de_caso_2_trimestre/conteudo/login.dart';
 import 'package:estudo_de_caso_2_trimestre/conteudo/telaCriarContato.dart';
 import 'package:estudo_de_caso_2_trimestre/conteudo/telaEditarContato.dart';
 import 'package:estudo_de_caso_2_trimestre/controllers/contatosController.dart';
+import 'package:estudo_de_caso_2_trimestre/modelo/api/usersApi.dart';
 import 'package:estudo_de_caso_2_trimestre/modelo/classes/contatos.dart';
+import 'package:estudo_de_caso_2_trimestre/modelo/classes/user.dart';
+import 'package:estudo_de_caso_2_trimestre/modelo/local_storage_service.dart';
 import 'package:estudo_de_caso_2_trimestre/widgetsPersonalizados/widgetsDeAjudaVersao1.dart';
 import 'package:flutter/material.dart';
 
@@ -26,14 +30,18 @@ class _TelaprincipalState extends State<Telaprincipal> {
   List<Contatos> selecionados = [];
   List<String> iniciasJaExistentes = [];
 
+  User? usuario;
+
   Future<void> carregarDados() async {
     try {
+      User? usuarioAchado = await LocalStorageService.carregarUsuario();
       final dados = await Contatoscontroller.listarContatos(
         '',
         favorito,
         ordem,
       );
       setState(() {
+        usuario = usuarioAchado;
         contatos = dados;
       });
 
@@ -66,7 +74,36 @@ class _TelaprincipalState extends State<Telaprincipal> {
     return (selecionados.isEmpty)
         ? AppBar(
             backgroundColor: Colors.black,
-            title: Text('Contatos', style: TextStyle(color: Colors.white)),
+            title: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    'Contatos de ${usuario?.name}',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                IconButton(
+                  onPressed: () async {
+                    print('${usuario!.token}    aaaaaaaaaaaaaaaaa');
+                    //await LocalStorageService.deslogarUsuario();
+                    int resultado = await Usersapi.logout(usuario!);
+
+                    if (resultado == 204) {
+                      barraDeSucesso('Logout concluido com sucesso!');
+                      Future(() {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => Login()),
+                        );
+                      });
+                    } else {
+                      barraDeFracasso('Algo de errado não esta certo');
+                    }
+                  },
+                  icon: Icon(Icons.logout_outlined, color: Colors.white),
+                ),
+              ],
+            ),
           )
         : AppBar(
             backgroundColor: Colors.grey.withValues(alpha: 0.5),
@@ -103,6 +140,26 @@ class _TelaprincipalState extends State<Telaprincipal> {
   void initState() {
     carregarDados();
     super.initState();
+  }
+
+  void barraDeSucesso(String texto) {
+    SnackBar minhaSnack = SnackBar(
+      content: Text(texto),
+      backgroundColor: Colors.green,
+      duration: Duration(seconds: 6),
+      showCloseIcon: true,
+    );
+    ScaffoldMessenger.of(context).showSnackBar(minhaSnack);
+  }
+
+  void barraDeFracasso(String texto) {
+    SnackBar minhaSnack = SnackBar(
+      content: Text(texto),
+      backgroundColor: Colors.red,
+      duration: Duration(seconds: 6),
+      showCloseIcon: true,
+    );
+    ScaffoldMessenger.of(context).showSnackBar(minhaSnack);
   }
 
   @override
@@ -244,11 +301,10 @@ class _TelaprincipalState extends State<Telaprincipal> {
                                     backgroundColor: Color(
                                       0xFF6C63FF,
                                     ).withValues(alpha: 0.3),
-                                    child:
-                                     (selecionados.contains(contato)) ?
-                                      Icon(Icons.check,color: Colors.white,):
-                                        contato.urlImage != null &&
-                                            contato.urlImage!.isNotEmpty
+                                    child: (selecionados.contains(contato))
+                                        ? Icon(Icons.check, color: Colors.white)
+                                        : contato.urlImage != null &&
+                                              contato.urlImage!.isNotEmpty
                                         ? ClipOval(
                                             child: SizedBox(
                                               width: 120,
