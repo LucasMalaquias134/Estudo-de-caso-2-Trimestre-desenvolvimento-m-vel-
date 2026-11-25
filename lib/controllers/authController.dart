@@ -17,11 +17,11 @@ class Authcontroller {
         );
       });
     } else {
-      int usuarioAtivoWeb = await Usersapi.verificaSessao(
+      bool usuarioAtivoWeb = await Usersapi.verificaSessao(
         usuarioAtivoMobile.token!,
       );
 
-      if (usuarioAtivoWeb == 200) {
+      if (usuarioAtivoWeb == true) {
         Future.delayed(Duration(seconds: 3), () {
           Navigator.pushReplacement(
             context,
@@ -39,6 +39,20 @@ class Authcontroller {
           );
         });
       }
+    }
+  }
+
+  static Future<bool> logout(User usuario) async {
+    try {
+      int resultadoOnline = await Usersapi.logoutAPI(usuario);
+      if (resultadoOnline == 204) {
+        await LocalStorageService.limparTudo();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print(e);
+      return false;
     }
   }
 }

@@ -4,8 +4,8 @@ import 'dart:math' as math;
 import 'package:estudo_de_caso_2_trimestre/conteudo/login.dart';
 import 'package:estudo_de_caso_2_trimestre/conteudo/telaCriarContato.dart';
 import 'package:estudo_de_caso_2_trimestre/conteudo/telaEditarContato.dart';
+import 'package:estudo_de_caso_2_trimestre/controllers/authController.dart';
 import 'package:estudo_de_caso_2_trimestre/controllers/contatosController.dart';
-import 'package:estudo_de_caso_2_trimestre/modelo/api/usersApi.dart';
 import 'package:estudo_de_caso_2_trimestre/modelo/classes/contatos.dart';
 import 'package:estudo_de_caso_2_trimestre/modelo/classes/user.dart';
 import 'package:estudo_de_caso_2_trimestre/modelo/local_storage_service.dart';
@@ -84,11 +84,9 @@ class _TelaprincipalState extends State<Telaprincipal> {
                 ),
                 IconButton(
                   onPressed: () async {
-                    print('${usuario!.token}    aaaaaaaaaaaaaaaaa');
-                    //await LocalStorageService.deslogarUsuario();
-                    int resultado = await Usersapi.logout(usuario!);
+                    bool resultado = await Authcontroller.logout(usuario!);
 
-                    if (resultado == 204) {
+                    if (resultado == true) {
                       barraDeSucesso('Logout concluido com sucesso!');
                       Future(() {
                         Navigator.pushReplacement(

@@ -39,7 +39,7 @@ class Usersapi {
       return 201;
     } else {
       print('Deu erro: ${response.body}');
-      return 400;
+      return response.statusCode;
     }
   }
 
@@ -79,7 +79,7 @@ class Usersapi {
     }
   }
 
-  static Future<int> logout(User usuario) async {
+  static Future<int> logoutAPI(User usuario) async {
     String caminho = '${Rotas.rotaApi}logout';
     final url = Uri.parse(caminho);
 
@@ -104,7 +104,7 @@ class Usersapi {
     }
   }
 
-  static Future<int> verificaSessao(String token) async {
+  static Future<bool> verificaSessao(String token) async {
     String caminho = '${Rotas.rotaApi}me';
     final url = Uri.parse(caminho);
 
@@ -118,12 +118,12 @@ class Usersapi {
     );
 
     if (response.statusCode == 200) {
-      return 200;
+      return true;
     } else {
       print(
         'Erro no servidor: ${response.body} (Código: ${response.statusCode})',
       );
-      return response.statusCode;
+      return false;
     }
   }
 }

@@ -45,4 +45,11 @@ class LocalStorageService {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove(LISTA_USERS);
   }
+
+  //====================================Recurso Apagar
+
+  static Future<void> limparTudo() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+  }
 }

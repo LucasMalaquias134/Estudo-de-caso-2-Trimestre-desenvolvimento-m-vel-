@@ -1,7 +1,37 @@
 import 'package:estudo_de_caso_2_trimestre/modelo/classes/contatos.dart';
 import 'package:estudo_de_caso_2_trimestre/modelo/local_storage_service.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as path;
+import 'dart:io';
 
 class Contatoscontroller {
+  // GABRIEL LEIAAAAAAAAA : Este é um metodo de armazernar imagem que eu desenvolvi no TCC,
+  // Para voce usar ele, basta colocar a URL que foi retornada da API dos Contatos, e ela retornara uma string que é
+  // o caminho da foto baixada no aplicativo entendeu? Exemplo :
+  // API da : 'Url/google.com/fotos', coloque a url nesse metodo e sera retornado uma string "celularGabriel/files/fotos"
+  // Crie a API de contatos no lib/modelo/api
+  static Future<String?> baixarESalvarImagem(String? urlImagem) async {
+    if (urlImagem != null && urlImagem.trim().isNotEmpty) {
+      try {
+        final response = await http.get(Uri.parse(urlImagem));
+        if (response.statusCode != 200) {
+          return null;
+        }
+        final appDir = await getApplicationDocumentsDirectory();
+        String nomeArquivo = path.basename(urlImagem);
+        File arquivoLocal = File('${appDir.path}/$nomeArquivo');
+        await arquivoLocal.writeAsBytes(response.bodyBytes);
+        return arquivoLocal.path;
+      } catch (e) {
+        print("Erro aqui oooo: $e");
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
+
   static Future<int> criarContato(
     String nome,
     String sobreNome,

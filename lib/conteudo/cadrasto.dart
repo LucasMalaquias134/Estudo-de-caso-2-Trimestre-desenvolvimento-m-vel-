@@ -19,6 +19,7 @@ class _CadrastoState extends State<Cadrasto> {
 
   final _formKey = GlobalKey<FormState>();
 
+  @override
   void dispose() {
     emailController.dispose();
     senhaController.dispose();
@@ -63,7 +64,7 @@ class _CadrastoState extends State<Cadrasto> {
                 shadows: [Shadow(blurRadius: 10, color: Colors.indigo)],
               ),
               Text(
-                'Cradasto de Usuario Novo',
+                'Cadastro de Usuario Novo',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,
@@ -154,7 +155,7 @@ class _CadrastoState extends State<Cadrasto> {
                               ),
                             );
                           } else {
-                            barraDeFracasso('Senha ou Email incorretos!');
+                            barraDeFracasso('Erro no servidor! $usuario');
                           }
                         }
                       },

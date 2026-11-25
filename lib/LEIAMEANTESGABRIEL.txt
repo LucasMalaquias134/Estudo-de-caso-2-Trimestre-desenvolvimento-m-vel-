@@ -1,0 +1,13 @@
+Gabriel eu fiz algumas alterações em quase todo o codigo, isso inclui as paginas, controllers, api, tudo mesmo. Recomendo tirar um tempo para ver.
+Quero dizer oque eu fiz : 
+
+    No contatoController, eu criei um metodo de salvar foto no celular, você deve configurar no php (online) para enviar uma lista de contantos,
+    esse metodo que eu criei de salvar foto no celular ele busca o endereço URL na internet e baixa a foto, ou seja, no server voce tem que 
+    garantir o envio correto do objeto contato, pois este ja contem a String que é o path da imagem (a url) - eu fiz isso no store do contatoController.php XD, muda la depois-
+
+    Não sei mais oque dizer, praticamente so me restou arrumar a foto porque o resto eu ja tinha feito antes acredita? aí eu fiz so as partes essencias
+    para voce so ter o trabalho de conectar elas, acredito que so falta voce arrumar o codigo WEB e MOBILE para o envio de contato para o sever e o envio
+    de contatoS para o mobile entendeu?
+
+    Acho que a questão da foto ta pronto, de qualquer forma termina sua parte, se não conseguir conectar os pontos me avisa que eu termino de fazer isso blz?
+    Vai me avisando da situação;

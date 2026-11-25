@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:estudo_de_caso_2_trimestre/controllers/contatosController.dart';
+import 'package:estudo_de_caso_2_trimestre/modelo/api/contatosApi.dart';
 import 'package:estudo_de_caso_2_trimestre/widgetsPersonalizados/widgetsDeAjudaVersao1.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -122,6 +123,17 @@ class _TelacriarcontatoState extends State<Telacriarcontato> {
             SalvarContato(
               texto: 'Salvar',
               funcao: () async {
+                if (arquivoDaImagem != null) {
+                  bool resultado = await Contatosapi.salvarFotoOnline(
+                    arquivoDaImagem!,
+                  );
+                  if (resultado == false) {
+                    erroShowDialog(
+                      'Erro no upload da imagem: Imagem muito grande ou erro do servidor',
+                    );
+                    return;
+                  }
+                }
                 if (_formKey.currentState!.validate()) {
                   int resultado = await Contatoscontroller.criarContato(
                     nomeController.text,

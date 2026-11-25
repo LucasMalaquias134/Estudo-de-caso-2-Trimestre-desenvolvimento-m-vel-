@@ -18,6 +18,7 @@ class _LoginState extends State<Login> {
 
   final _formKey = GlobalKey<FormState>();
 
+  @override
   void dispose() {
     emailController.dispose();
     senhaController.dispose();
@@ -169,6 +170,16 @@ class _LoginState extends State<Login> {
                 },
                 child: Text(
                   "Não tem conta?",
+                  style: TextStyle(color: Colors.indigoAccent, fontSize: 15),
+                ),
+              ),
+              SizedBox(height: 10),
+              GestureDetector(
+                onTap: () async {
+                  print('ola');
+                },
+                child: Text(
+                  "Apagar Tudo?",
                   style: TextStyle(color: Colors.indigoAccent, fontSize: 15),
                 ),
               ),
